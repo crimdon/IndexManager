@@ -1,0 +1,17 @@
+﻿@{
+    ViewBag.Title = "Databases";
+}
+
+@using System.Collections.Generic;
+@using Index_Manager_Web.Models;
+
+@model IDatabasesModel
+
+<div class="jumbotron">
+    <h2>Databases on @Html.DisplayFor(m => Session["servername"])</h2>
+</div>
+
+@foreach (IDatabasesModel item in ViewBag.Databases)
+    {
+        @Html.Partial("_DatabaseWidget", item)
+    }

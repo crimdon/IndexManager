@@ -1,0 +1,194 @@
+﻿@{
+    ViewBag.Title = "Login Page";
+}
+
+@using Index_Manager_Web.Models;
+
+@model LoginModel
+
+<div class="jumbotron">
+    <h2>Login</h2>
+</div>
+
+<br />
+@if ((Session["servername"]) != null)
+{
+    <div class="h3 text-center">
+        You are logged in to: @Html.DisplayFor(m => Session["servername"])
+        <br />
+        <br />
+    </div>
+    <div class="text-center">
+         @using (Html.BeginForm("Logout", "Home", FormMethod.Post)) { <div class="form-row">
+            <div class="mw-form-field mw-form-field--submit">
+                <input class="myButton" id="submitbutton" type="submit" value="Logout" />
+            </div>                                                                   
+        </div>
+    }
+    </div>
+}
+else
+{
+    <div>
+        @using (Html.BeginForm("Index", "Home", FormMethod.Post))
+        {
+            <div class="form-row">
+                <div>
+                    SQL Server Name:
+                </div>
+                <div class="form-control-container text-left">
+                    @Html.TextBoxFor(m => m.Servername, new { @class = "form-control" })
+                    <br />
+                    @Html.ValidationMessageFor(m => m.Servername, "", new { @class = "h6 text-danger" })
+                </div>
+            </div>
+            <div class="form-row">
+                <div>
+                    Authentication Type:
+                </div>
+                <div class="form-control-container text-left">
+                    @Html.DropDownListFor(m => m.Authentication, (List<SelectListItem>)ViewBag.dropdown, null, new { @onchange = "toggleOptionalDisplay(this.value)", @class = "form-control" })
+                    <br />
+                </div>
+            </div>
+            <div id="Optional" hidden>
+                <div class="form-row">
+                    <div>
+                        SQL Username:
+                    </div>
+                    <div class="form-control-container text-left">
+                        @Html.TextBoxFor(m => m.Username, new { @class = "form-control" })
+                        <br />
+                        @Html.ValidationMessageFor(m => m.Username, "", new { @class = "h6 text-danger" })
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div>
+                        SQL Password:
+                    </div>
+                    <div class="form-control-container text-left">
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                        <br />
+                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "h6 text-danger" })
+                    </div>
+                </div>
+                <div style="clear: both;">
+                </div>
+            </div>
+
+            <div class="mw-form-field mw-form-field--submit">
+                <input class="myButton" id="submitbutton" type="submit" value="Login" @*onclick="return DisplayProgressMessage(this, 'Login in progress, please wait!')"*@ />
+            </div>
+            <br />
+                <div class="form-control-container text-left">
+                    @Html.ValidationMessage("LoginError", new { @class = "h5 text-danger" })
+                </div>
+
+                <div class="submit-progress hidden">
+                    <p>
+                        <label>Login in progress, please wait!</label>
+                    </p>
+                </div>
+        }
+    </div>
+}
+
+<script>
+    function toggleOptionalDisplay(e) {
+        if (e == "SQL") {
+            $('#Optional').show();
+        }
+        else {
+            $('#Optional').hide();
+        }
+    }
+</script>
+
+<script>
+    function DisplayProgressMessage(ctl, msg) {
+        $(ctl).prop("disabled", true).text(msg);
+        $(".submit-progress").removeClass("hidden");
+        $("body").addClass("submit-progress-bg");
+        return true;
+    }
+</script>
+
+<style>
+    .submit-progress {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        height: 6em;
+        padding-top: 2.3em;
+        /* The following rules are the
+        ones most likely to change */
+        width: 20em;
+        /* Set 'margin-left' to a negative number
+        that is 1/2 of 'width' */
+        margin-left: -10em;
+        padding-left: 2.1em;
+        background-color: black;
+        color: white;
+        -webkit-border-radius: 0.4em;
+        -moz-border-radius: 0.4em;
+        border-radius: 0.4em;
+        box-shadow: 0.4em 0.4em rgba(0,0,0,0.6);
+        -webkit-box-shadow: 0.4em 0.4em rgba(0,0,0,0.6);
+        -moz-box-shadow: 0.4em 0.4em rgba(0,0,0,0.6);
+    }
+
+        .submit-progress i {
+            margin-right: 0.5em;
+        }
+</style>
+
+<style>
+    .submit-progress-bg {
+        background-color: lightgray;
+        opacity: .5;
+    }
+</style>
+
+<style>
+.myButton {
+	-moz-box-shadow:inset 0px 1px 0px 0px #bbdaf7;
+	-webkit-box-shadow:inset 0px 1px 0px 0px #bbdaf7;
+	box-shadow:inset 0px 1px 0px 0px #bbdaf7;
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #79bbff), color-stop(1, #378de5));
+	background:-moz-linear-gradient(top, #79bbff 5%, #378de5 100%);
+	background:-webkit-linear-gradient(top, #79bbff 5%, #378de5 100%);
+	background:-o-linear-gradient(top, #79bbff 5%, #378de5 100%);
+	background:-ms-linear-gradient(top, #79bbff 5%, #378de5 100%);
+	background:linear-gradient(to bottom, #79bbff 5%, #378de5 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#79bbff', endColorstr='#378de5',GradientType=0);
+	background-color:#79bbff;
+	-moz-border-radius:6px;
+	-webkit-border-radius:6px;
+	border-radius:6px;
+	border:1px solid #84bbf3;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:15px;
+	font-weight:bold;
+	padding:6px 24px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #528ecc;
+}
+.myButton:hover {
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #378de5), color-stop(1, #79bbff));
+	background:-moz-linear-gradient(top, #378de5 5%, #79bbff 100%);
+	background:-webkit-linear-gradient(top, #378de5 5%, #79bbff 100%);
+	background:-o-linear-gradient(top, #378de5 5%, #79bbff 100%);
+	background:-ms-linear-gradient(top, #378de5 5%, #79bbff 100%);
+	background:linear-gradient(to bottom, #378de5 5%, #79bbff 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#378de5', endColorstr='#79bbff',GradientType=0);
+	background-color:#378de5;
+}
+.myButton:active {
+	position:relative;
+	top:1px;
+}
+
+</style>

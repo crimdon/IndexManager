@@ -1,0 +1,117 @@
+﻿@{
+    ViewBag.Title = "Fragmented Indexes";
+    //Layout = "~/Views/Shared/_FullScreenLayout .cshtml";
+}
+
+@using Index_Manager_Web.Models;
+@using GridMvc.Html;
+
+@model List<FragmentedIndexes>
+
+<link href="@Url.Content("~/Content/Gridmvc.css")" rel="stylesheet" />
+<link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet" />
+
+
+<div class="jumbotron">
+    <h2>Fragmented Indexes for @ViewBag.DatabaseName</h2>
+</div>
+
+<div class="code-cut">
+    @Html.Grid(Model).Columns(columns =>
+{
+    columns.Add(FragmentedIndexes => FragmentedIndexes.TableName)
+    .Titled("Table Name")
+    .Filterable(true);
+    columns.Add(FragmentedIndexes => FragmentedIndexes.IndexName)
+    .Titled("Index Name")
+    .Filterable(false);
+    columns.Add(FragmentedIndexes => FragmentedIndexes.AvgFragmentation)
+    .Titled("Avg Fragmentation")
+    .Filterable(false);
+    columns.Add(FragmentedIndexes => FragmentedIndexes.PageCount)
+    .Titled("Page Count")
+    .Filterable(false);
+    columns.Add()
+    .Encoded(false)
+    .Sanitized(false)
+    .SetWidth(30)
+    .RenderValueAs(FragmentedIndexes => Html.ActionLink(FragmentedIndexes.Action, FragmentedIndexes.Action, "FragmentedIndexes",
+        new { databaseName = ViewBag.DatabaseName, tableName = FragmentedIndexes.TableName, indexName = FragmentedIndexes.IndexName},
+        new { @class = ButtonType(FragmentedIndexes.Action), @onclick = "showPageLoadingMessage()" }));
+}).WithPaging(15)
+
+    <div class="ajaxLoaderDiv hidden">
+        <p>
+            <label>Processing...</label>
+        </p>
+    </div>
+</div>
+
+@helper ButtonType(string action)
+{
+switch (action)
+{
+    case "Rebuild":
+            @(string.Format("btn btn-danger"));
+        break;
+    case "Defrag":
+            @(string.Format("btn btn-warning"));
+            break;
+    }
+}
+
+<script>
+    function toggleOptionalDisplay(e) {
+    if (e == "SQL") {
+            $('#Optional').show();
+    }
+    else {
+            $('#Optional').hide();
+    }
+}
+</script>
+
+<script>
+    function DisplayProgressMessage(ctl, msg) {
+        $(ctl).prop("disabled", true).text(msg);
+        $(".submit-progress").removeClass("hidden");
+        $("body").addClass("submit-progress-bg");
+    return true;
+}
+</script>
+
+<style>
+    .submit-progress {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    height: 6em;
+    padding-top: 2.3em;
+    /* The following rules are the
+        ones most likely to change */
+    width: 20em;
+    /* Set 'margin-left' to a negative number
+        that is 1/2 of 'width' */
+    margin-left: -10em;
+    padding-left: 2.1em;
+    background-color: black;
+    color: white;
+    -webkit-border-radius: 0.4em;
+    -moz-border-radius: 0.4em;
+    border-radius: 0.4em;
+    box-shadow: 0.4em 0.4em rgba(0,0,0,0.6);
+    -webkit-box-shadow: 0.4em 0.4em rgba(0,0,0,0.6);
+    -moz-box-shadow: 0.4em 0.4em rgba(0,0,0,0.6);
+}
+
+        .submit-progress i {
+    margin-right: 0.5em;
+}
+</style>
+
+<style>
+    .submit-progress-bg {
+    background-color: lightgray;
+    opacity: .5;
+}
+</style>

@@ -1,0 +1,111 @@
+﻿@model Index_Manager_Web.Models.IDatabasesModel
+
+<div class="widget">
+    <div class="header">
+        <img src="~/Content/Images/database.png" alt="" width="30" height="30" />
+        @Model.DatabaseName
+    </div>
+    <div class="body">
+        <p>
+            <img src="~/Content/Images/database-connected.png" alt="" />
+        @Html.ActionLink("Missing Indexes", "MissingIndexes", "MissingIndexes", new { databaseName = Model.DatabaseName.ToString() }, 
+            new { @onclick = "showPageLoadingMessage()" })
+        </p>
+        <p>
+            <img src="~/Content/Images/database-connected.png" alt="" />
+            @Html.ActionLink("Unused Indexes", "UnusedIndexes", "UnusedIndexes", new { databaseName = Model.DatabaseName.ToString() },
+            new { @onclick = "showPageLoadingMessage()" })
+        </p>
+        <p>
+            <img src="~/Content/Images/database-connected.png" alt=""/>
+            @Html.ActionLink("Fragmented Indexes", "FragmentedIndexes", "FragmentedIndexes", new { databaseName = Model.DatabaseName.ToString() },
+            new { @onclick = "showPageLoadingMessage()" })
+        </p>
+        <p>
+            <img src="~/Content/Images/database-connected.png" alt="" />
+            @Html.ActionLink("Overlapping Indexes", "OverLappingIndexes", "OverLappingIndexes", new { databaseName = Model.DatabaseName.ToString() },
+            new { @onclick = "showPageLoadingMessage()" })
+        </p>
+    </div>
+    <div class="ajaxLoaderDiv hidden">
+        <p>
+            <label>Loading...</label>
+        </p>
+    </div>
+</div>
+
+<style>
+    .widget {
+    color: black;
+    border: 2px solid red;
+    position: relative;
+    right: 0;
+    margin-left: 25px;
+    bottom: 0;
+    width: 320px;
+    height: 170px;
+    max-height: 170px;
+    margin-bottom: 25px;
+    float: left;
+    }
+    .header {
+    background-color: #668cff;
+    text-decoration-color: #E01B6A;
+    position: relative;
+    right: 0;
+    left: -2px;
+    top: -2px;
+    bottom: 1px;
+    width: 320px;
+    height: 35px;
+    border:2px solid   
+}
+    .body {
+        padding-left: 10px;
+        padding-top: 5px
+    }
+</style>
+
+<style>
+    .ajaxLoaderDiv {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        height: 6em;
+        padding-top: 2.3em;
+        /* The following rules are the
+     ones most likely to change */
+        width: 20em;
+        /* Set 'margin-left' to a negative number
+     that is 1/2 of 'width' */
+        margin-left: -10em;
+        padding-left: 2.1em;
+        background-color: black;
+        color: white;
+        -webkit-border-radius: 0.4em;
+        -moz-border-radius: 0.4em;
+        border-radius: 0.4em;
+        box-shadow: 0.4em 0.4em rgba(0,0,0,0.6);
+        -webkit-box-shadow: 0.4em 0.4em rgba(0,0,0,0.6);
+        -moz-box-shadow: 0.4em 0.4em rgba(0,0,0,0.6);
+    }
+
+        .ajaxLoaderDiv i {
+            margin-right: 0.5em;
+        }
+</style>
+
+<style>
+    .ajaxLoaderDiv-bg {
+        background-color: lightgray;
+        opacity: .5;
+    }
+</style>
+
+<script type="text/javascript">
+    function showPageLoadingMessage() {
+    $('#ajaxLoaderDiv').show();
+    $(".ajaxLoaderDiv").removeClass("hidden");
+    $("body").addClass("ajaxLoaderDiv-bg");
+ }
+</script>

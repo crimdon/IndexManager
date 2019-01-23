@@ -1,0 +1,116 @@
+﻿@{ 
+    ViewBag.Title = "Missing Indexes";
+    Layout = "~/Views/Shared/_FullScreenLayout .cshtml";
+}
+
+@using Index_Manager_Web.Models;
+@using GridMvc.Html;
+@using GridMvc.Sorting;
+
+@model List<MissingIndexes>
+
+<link href="@Url.Content("~/Content/Gridmvc.css")" rel="stylesheet" />
+<link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet" />
+
+
+<div class="jumbotron">
+    <h2>Missing Indexes for @ViewBag.DatabaseName</h2>
+</div>
+
+
+<div class="code-cut">
+    @Html.Grid(Model).Columns(columns =>
+{
+    columns.Add()
+    .Encoded(false)
+    .Sanitized(false)
+    .SetWidth(30)
+    .RenderValueAs(MissingIndexes => Html.ActionLink("Create Index", "CreateIndex", "MissingIndexes",
+            new { databaseName = MissingIndexes.DatabaseName, fullTableName = MissingIndexes.TableName, equalityColumns = MissingIndexes.EqualityColumns,
+                inequalityColumns = MissingIndexes.InqualiityColumns, includedColumns = MissingIndexes.IncludedColumns},
+            new { @class = "btn btn-success", @onclick = "showPageLoadingMessage()" }));
+    columns.Add(MissingIndexes => MissingIndexes.TableName)
+    .Titled("Table Name")
+    .Sortable(true)
+    .Filterable(true);
+    columns.Add(MissingIndexes => MissingIndexes.EqualityColumns)
+    .Titled("Equality Columns")
+    .Filterable(false);
+    columns.Add(MissingIndexes => MissingIndexes.InqualiityColumns)
+    .Titled("Inequality Columns")
+    .Filterable(false);
+    columns.Add(MissingIndexes => MissingIndexes.IncludedColumns)
+    .Titled("Included Columns")
+    .Filterable(false);
+    columns.Add(MissingIndexes => MissingIndexes.UniqueCompiles)
+    .Titled("Unique Compiles")
+    .Sortable(true)
+    .Filterable(false);
+    columns.Add(MissingIndexes => MissingIndexes.IndexAdvantage)
+    .Titled("Index Advantage")
+    .Sortable(true)
+    .SortInitialDirection(GridSortDirection.Descending)
+    .Filterable(false);
+    columns.Add(MissingIndexes => MissingIndexes.LastUserSeek)
+    .Titled("Last User Seek")
+    .Filterable(false);
+    columns.Add(MissingIndexes => MissingIndexes.UserSeeks)
+    .Titled("User Seeks")
+    .Filterable(false);
+    columns.Add(MissingIndexes => MissingIndexes.AvgTotalUserCost)
+    .Titled("Avg Total User Cost")
+    .Filterable(false);
+    columns.Add(MissingIndexes => MissingIndexes.AvgUserImpact)
+    .Titled("Avg User Impact")
+    .Filterable(false);
+}).WithPaging(20)
+    <div class="ajaxLoaderDiv hidden">
+        <p>
+            <label>Loading...</label>
+        </p>
+    </div>
+</div>
+
+<style>
+    .ajaxLoaderDiv {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        height: 6em;
+        padding-top: 2.3em;
+        /* The following rules are the
+     ones most likely to change */
+        width: 20em;
+        /* Set 'margin-left' to a negative number
+     that is 1/2 of 'width' */
+        margin-left: -10em;
+        padding-left: 2.1em;
+        background-color: black;
+        color: white;
+        -webkit-border-radius: 0.4em;
+        -moz-border-radius: 0.4em;
+        border-radius: 0.4em;
+        box-shadow: 0.4em 0.4em rgba(0,0,0,0.6);
+        -webkit-box-shadow: 0.4em 0.4em rgba(0,0,0,0.6);
+        -moz-box-shadow: 0.4em 0.4em rgba(0,0,0,0.6);
+    }
+
+        .ajaxLoaderDiv i {
+            margin-right: 0.5em;
+        }
+</style>
+
+<style>
+    .ajaxLoaderDiv-bg {
+        background-color: lightgray;
+        opacity: .5;
+    }
+</style>
+
+<script type="text/javascript">
+    function showPageLoadingMessage() {
+    $('#ajaxLoaderDiv').show();
+    $(".ajaxLoaderDiv").removeClass("hidden");
+    $("body").addClass("ajaxLoaderDiv-bg");
+ }
+</script>

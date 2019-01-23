@@ -1,0 +1,95 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <link rel="shortcut icon" href="@Url.Content("~/favicon.ico")" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Index Manager</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <script src="@Url.Content("~/Scripts/jquery-1.10.2.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/gridmvc.min.js")"></script>
+    @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Index Manager", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+@if ((Session["servername"]) != null)
+{
+    <ul class="nav navbar-nav">
+        <li>@Html.ActionLink("Login", "Index", "Home")</li>
+        <li>@Html.ActionLink("Databases", "Databases", "Connected")</li>
+    </ul>
+}
+else
+{
+    <ul class="nav navbar-nav">
+        <li>@Html.ActionLink("Login", "Index", "Home")</li>
+    </ul>
+}
+                <p class="nav navbar-text navbar-right">Hello, @User.Identity.Name!</p>
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
+
+<style>
+    .ajaxLoaderDiv {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        height: 6em;
+        padding-top: 2.3em;
+        /* The following rules are the
+     ones most likely to change */
+        width: 20em;
+        /* Set 'margin-left' to a negative number
+     that is 1/2 of 'width' */
+        margin-left: -10em;
+        padding-left: 2.1em;
+        background-color: black;
+        color: white;
+        -webkit-border-radius: 0.4em;
+        -moz-border-radius: 0.4em;
+        border-radius: 0.4em;
+        box-shadow: 0.4em 0.4em rgba(0,0,0,0.6);
+        -webkit-box-shadow: 0.4em 0.4em rgba(0,0,0,0.6);
+        -moz-box-shadow: 0.4em 0.4em rgba(0,0,0,0.6);
+    }
+
+        .ajaxLoaderDiv i {
+            margin-right: 0.5em;
+        }
+</style>
+
+<style>
+    .ajaxLoaderDiv-bg {
+        background-color: lightgray;
+        opacity: .5;
+    }
+</style>
+
+<script type="text/javascript">
+function showPageLoadingMessage() {
+    //$('#ajaxLoaderDiv').show();
+    $(".ajaxLoaderDiv").removeClass("hidden");
+    $("body").addClass("ajaxLoaderDiv-bg");
+ }
+</script>
