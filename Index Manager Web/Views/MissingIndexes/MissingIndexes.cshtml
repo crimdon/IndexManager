@@ -26,8 +26,14 @@
     .Sanitized(false)
     .SetWidth(30)
     .RenderValueAs(MissingIndexes => Html.ActionLink("Create Index", "CreateIndex", "MissingIndexes",
-            new { databaseName = MissingIndexes.DatabaseName, fullTableName = MissingIndexes.TableName, equalityColumns = MissingIndexes.EqualityColumns,
-                inequalityColumns = MissingIndexes.InqualiityColumns, includedColumns = MissingIndexes.IncludedColumns},
+            new
+            {
+                databaseName = MissingIndexes.DatabaseName,
+                fullTableName = MissingIndexes.TableName,
+                equalityColumns = MissingIndexes.EqualityColumns,
+                inequalityColumns = MissingIndexes.InqualiityColumns,
+                includedColumns = MissingIndexes.IncludedColumns
+            },
             new { @class = "btn btn-success", @onclick = "showPageLoadingMessage()" }));
     columns.Add(MissingIndexes => MissingIndexes.TableName)
     .Titled("Table Name")
